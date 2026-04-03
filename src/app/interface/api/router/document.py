@@ -28,7 +28,7 @@ def uploaded(
     worker_service: Annotated[IWorkerService, Depends(get_worker_service)],
     storage_service: Annotated[IStorageService, Depends(get_storage_service)],
 ) -> JobId:
-    job_id = DocumentService.enqueue(
+    job_id = DocumentService.process(
         document_id=DocumentId(document_id),
         worker_service=worker_service,
         storage_service=storage_service,
