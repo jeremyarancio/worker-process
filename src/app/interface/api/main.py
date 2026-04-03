@@ -1,20 +1,11 @@
-from typing import Annotated
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 
-from app.application.document import DocumentService
-from app.interface.schemas.storage import PresignedUrlResponse
+from app.interface.api.router.document import router as document_router
 
 app = FastAPI()
+app.include_router(document_router)
 
 
 @app.get("")
 def welcome():
     return "Welcome to the worker processing demo!"
-
-
-@app.get("/upload")
-def upload(
-    storage_service: Annotated[IStorageService, Depends(get_storage_service)],
-) -> PresignedUrlResponse:
-    presigned_url = DocumentService.upload(storage_service=storage_service)
-    return PresignedUrlResponse(url=presigned_url)
