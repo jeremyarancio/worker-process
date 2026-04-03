@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends
 from uuid import UUID
 
 from app.application.document import DocumentService
