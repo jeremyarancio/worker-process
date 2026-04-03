@@ -1,3 +1,4 @@
+from typing import BinaryIO
 from app.application.ports.storage import IStorageService
 from app.domain.document import DocumentId
 
@@ -8,6 +9,12 @@ class MockStorageService(IStorageService):
 
     def get_presigned_url(self, document_id: DocumentId) -> str:
         return f"mocked_presigned_url/{document_id}"
+
+    def store_document(self, obj: BinaryIO) -> None:
+        print("Document stored.")
+
+    def get_document(self, document_id: DocumentId) -> BinaryIO:
+        return b"Document"
 
 
 # class S3StorageService(IStorageService):

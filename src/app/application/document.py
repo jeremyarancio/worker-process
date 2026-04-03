@@ -24,13 +24,6 @@ class DocumentService:
         return job_id
 
     @staticmethod
-    def _process_task(
-        document_id: DocumentId, storage_service: IStorageService
-    ) -> None:
-        print(f"Processing document {document_id}")
-        # TODO: Add actual document processing logic
-
-    @staticmethod
     def check_job(job_id: JobId, worker_service: IWorkerService):
         return worker_service.check(job_id=job_id)
 
