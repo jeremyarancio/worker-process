@@ -4,6 +4,7 @@ from app.application.ports.storage import IStorageService
 from app.application.ports.worker import IWorkerService
 from app.domain.document import DocumentId
 from app.domain.worker import JobId
+from app.application.workers import tasks
 
 
 class DocumentService:
@@ -13,19 +14,13 @@ class DocumentService:
         presigned_url = storage_service.generate_presigned_url(document_id=document_id)
         return presigned_url
 
-    @classmethod
+    @staticmethod
     def process(
-        cls,
         document_id: DocumentId,
-        storage_service: IStorageService,
         worker_service: IWorkerService,
     ) -> JobId:
-        job_id = worker_service.enqueue(cls._process_task, document_id, storage_service)
+        job_id = worker_service.enqueue(tasks.process_document, document_id)
         return job_id
-
-    @staticmethod
-    def check_job(job_id: JobId, worker_service: IWorkerService):
-        return worker_service.check(job_id=job_id)
 
     @staticmethod
     def get_presigned_url(

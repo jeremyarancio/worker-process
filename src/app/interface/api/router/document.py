@@ -26,12 +26,10 @@ def upload(
 def uploaded(
     document_id: UUID,
     worker_service: Annotated[IWorkerService, Depends(get_worker_service)],
-    storage_service: Annotated[IStorageService, Depends(get_storage_service)],
 ) -> JobId:
     job_id = DocumentService.process(
         document_id=DocumentId(document_id),
         worker_service=worker_service,
-        storage_service=storage_service,
     )
     return job_id
 
@@ -41,11 +39,7 @@ def check_job(
     job_id: str,
     worker_service: Annotated[IWorkerService, Depends(get_worker_service)],
 ) -> Status:
-    status = DocumentService.check_job(
-        job_id=JobId(job_id),
-        worker_service=worker_service,
-    )
-    return status
+    return worker_service.check(job_id=JobId(job_id))
 
 
 @router.get("/download/{document_id}")
@@ -53,7 +47,4 @@ def download(
     document_id: UUID,
     storage_service: Annotated[IStorageService, Depends(get_storage_service)],
 ) -> str:
-    presigned_url = DocumentService.get_presigned_url(
-        document_id=DocumentId(document_id), storage_service=storage_service
-    )
-    return presigned_url
+    return storage_service.get_presigned_url(document_id=DocumentId(document_id))

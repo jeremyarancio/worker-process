@@ -6,12 +6,12 @@ from redis import Redis
 from app.application.ports.worker import IWorkerService
 
 from app.application.ports.storage import IStorageService
-from app.infrastructure.storage import MockStorageService
+from app.infrastructure.storage import LocalStorageService
 from app.infrastructure.worker import RQWorkerService
 
 
 def get_storage_service() -> IStorageService:
-    return MockStorageService()
+    return LocalStorageService(base_dir="/tmp/storage")
 
 
 def get_redis_conn():
